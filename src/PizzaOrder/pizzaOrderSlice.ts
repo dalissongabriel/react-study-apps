@@ -4,9 +4,9 @@ import { PizzaOrder } from './types';
 
 const initialState: PizzaOrder = {
     base: "small",
-    crust: "classic_thin",
+    crust: "simple",
     sauce: "no_sauce",
-    cheese: "no_cheese"
+    cheese: "mozzarela"
 }
 const pizzaOrderSlice = createSlice({
     name: "pizzaOrder",
