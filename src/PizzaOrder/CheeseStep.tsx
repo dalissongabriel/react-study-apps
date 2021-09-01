@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(2),
     }
   }),
 );
-
 
 export const CheeseStep: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -41,6 +41,11 @@ export const CheeseStep: React.FC = () => {
     dispatch(chooseCheese(cheese));
     history.push("/pizza-order/sauce-step")
   }
+
+  const handleCancel = () => {
+    history.push('/pizza-order/crust-step');
+  }
+
   return (
     <Container maxWidth="sm">
       <Header>Pedido de Pizza</Header>
@@ -66,6 +71,13 @@ export const CheeseStep: React.FC = () => {
           variant="contained"
           color="primary">
             Próxima etapa
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={handleCancel}
+          variant="contained"
+          color="secondary">
+          Voltar
         </Button>
       </form>
     </Container>

@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(2),
     }
   }),
 );
@@ -41,6 +42,11 @@ export const CrustStep: React.FC = () => {
     dispatch(chooseCrust(crust));
     history.push("/pizza-order/cheese-step")
   }
+
+  const handleCancel = () => {
+    history.push('/pizza-order/base-step');
+  }
+
   return (
     <Container maxWidth="sm">
       <Header>Pedido de Pizza</Header>
@@ -67,6 +73,13 @@ export const CrustStep: React.FC = () => {
           variant="contained"
           color="primary">
             Próxima etapa
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={handleCancel}
+          variant="contained"
+          color="secondary">
+          Voltar
         </Button>
       </form>
     </Container>
