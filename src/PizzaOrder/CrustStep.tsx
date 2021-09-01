@@ -1,32 +1,87 @@
-import { useAppDispatch } from '../app/hooks'; 
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useHistory } from 'react-router';
 import { useForm } from 'react-hook-form';
+import {
+  Button,
+  Container,
+  createStyles,
+  Theme,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+  FormControl
+} from '@material-ui/core';
 
-import { chooseCrust } from './pizzaOrderSlice';
+import { chooseCrust, selectPizzaOrder } from './pizzaOrderSlice';
+import { Header } from '../shared/Header';
+
 import { PizzaOrder } from './types';
 
-export const CrustStep: React.FC = () => {
-    const dispatch = useAppDispatch()
-    const history = useHistory();
-    const { register, handleSubmit } = useForm();
-
-    const onSubmit = ({ crust }: PizzaOrder) => {
-        dispatch(chooseCrust(crust));
-        history.push("/pizza-order/cheese-step")
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    form: {
+      width: '100%'
+    },
+    button: {
+      marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(2),
     }
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <label htmlFor="crust">Selecione a borda:</label>
-                <select id="crust" {...register("crust")}>
-                    <option value="simple">Simples</option>
-                    <option value="tie_edge">Gravata borboleta</option>
-                    <option value="rope">Corda</option>
-                    <option value="star">Estrela</option>
-                    <option value="volcano">Vulcão</option>
-                </select>
-            </div>
-            <button>Próxima etapa</button>
-        </form>
-    )
+  }),
+);
+
+
+export const CrustStep: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const history = useHistory();
+  const { register, handleSubmit } = useForm();
+  const { crust } = useAppSelector(selectPizzaOrder)
+  const classes = useStyles();
+
+  const onSubmit = ({ crust }: PizzaOrder) => {
+    dispatch(chooseCrust(crust));
+    history.push("/pizza-order/cheese-step")
+  }
+
+  const handleCancel = () => {
+    history.push('/pizza-order/base-step');
+  }
+
+  return (
+    <Container maxWidth="sm">
+      <Header>Pedido de Pizza</Header>
+      <form className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+        <FormControl fullWidth>
+          <InputLabel id="crust-label">Selecione o tipo de borda:</InputLabel>
+          <Select
+            fullWidth
+            labelId="crust-label"
+            id="crust"
+            defaultValue={crust}
+            {...register("crust")}
+          >
+            <MenuItem selected value={"simple"}>Simples</MenuItem>
+            <MenuItem value={"tie_edge"}>Gravata borboleta</MenuItem>
+            <MenuItem value={"rope"}>Corda</MenuItem>
+            <MenuItem value={"star"}>Estrela</MenuItem>
+            <MenuItem value={"volcano"}>Vulcão</MenuItem>
+          </Select>
+        </FormControl>
+        <Button
+          type="submit"
+          className={classes.button}
+          variant="contained"
+          color="primary">
+            Próxima etapa
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={handleCancel}
+          variant="contained"
+          color="secondary">
+          Voltar
+        </Button>
+      </form>
+    </Container>
+  )
 }
