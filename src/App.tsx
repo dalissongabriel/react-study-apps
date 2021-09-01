@@ -1,58 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BaseStep } from './PizzaOrder/BaseStep';
+import { CheeseStep } from './PizzaOrder/CheeseStep';
+import { CrustStep } from './PizzaOrder/CrustStep';
+import { SauceStep } from './PizzaOrder/SauceStep';
+import { Provider } from "react-redux";
+import { store }from "./app/store";
+import { Result } from "./PizzaOrder/Result";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
-  );
+export const App: React.FC = () => {
+    return (
+    <Provider store={store}>
+        <Router>
+            <Route exact path="/">
+                <Redirect to="/pizza-order/base-step"/>
+            </Route>
+            <Route path="/pizza-order/base-step" component={BaseStep}/>
+            <Route path="/pizza-order/crust-step" component={CrustStep}/>
+            <Route path="/pizza-order/cheese-step" component={CheeseStep}/>
+            <Route path="/pizza-order/sauce-step" component={SauceStep}/>
+            <Route path="/pizza-order/result" component={Result}/>
+        </Router>
+    </Provider>
+    )
 }
-
-export default App;
